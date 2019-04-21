@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<link rel="stylesheet" href="styles/style.css">
+	<title>Shop</title>
+</head>
+<body>
+   	<div id="app">
+		<header class="header">
+			<div class="container headerInside">
+				<div class="logo"> BRAN<span>D</span> </div>
+				<search @onsearch="handleSearch"></search>
+				<div v-bind:style="{ display: display }" class="quantityGoods">
+					<p> {{ basketBought.length }} </p> <img class="round" src="images/round.png" alt=""> </div>
+				<a class="headerCart" href="#" @click="goToCardClick"><img src="images/cart.png" alt=""></a>
+				<div id="dropDownlist" class="dropdown">
+					<!-- Выпадающий список -->
+				<button id="btn-secondaryTwo" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ this.loginEmail }}</button>
+					<!-- Кнопка выхода из аккаунта -->
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a  @click.prevent="logout" href="#" >Sign out</a>
+					</div>
+				</div>
+				<div id="dropDownlistTwo" class="dropdown">
+					<!-- Выпадающий список -->
+					<button id="btn-secondary" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Account</button>
+					<!-- Кнопка параметров аккаунта -->
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"> Entrance </button>
+						<!-- Кнопка модального окна №1 -->
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterTwo"> Chek in </button>
+						<!-- Кнопка модального окна №2 -->
+					</div>
+					<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<!-- Модальное окно №1 -->
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLongTitle">Login to account</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+								</div>
+								<div class="modal-body">
+									<form @submit="checkLogin" class="data-2">
+										<div class="form-group">
+											<label for="exampleInputEmail1">Email address</label>
+											<input v-model="loginEmail" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" required> <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> </div>
+										<div class="form-group">
+											<label for="exampleInputPassword1">Password</label>
+											<input v-model="loginPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" required> </div>
+										<div class="form-group form-check">
+											<input type="checkbox" class="form-check-input" id="exampleCheck1">
+											<label class="form-check-label" for="exampleCheck1">Check me out</label>
+										</div>
+										<p v-if="errorsLogin" id="errors">{{errorsLogin}}</p>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<button @click="checkLogin" type="button" data-dismiss="modal" class="btn btn-primary">Entrance</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal fade" id="exampleModalCenterTwo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<!-- Модальное окно №2 -->
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLongTitle">Account Registration</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+								</div>
+								<div class="modal-body">
+									<form @submit="checkRegisrt" name="registr" id="registr" class="data-1">
+										<div class="form-row">
+											<div class="form-group col-md-6">
+												<label for="inputEmail4">Email</label>
+												<input v-model="email" type="email" class="form-control" id="inputEmail4" placeholder="Email"> </div>
+											<div class="form-group col-md-6">
+												<label for="inputPassword4">Password</label>
+												<input v-model="password" type="password" class="form-control" id="inputPassword4" placeholder="Password"> </div>
+										</div>
+										<div class="form-group">
+											<label  for="inputAddress">Name</label>
+											<input v-model="name" type="text" class="form-control" id="inputName" placeholder="Name"> </div>
+										<div class="form-group">
+											<label for="inputAddress2">Country</label>
+											<input v-model="country"  type="text" class="form-control" id="inputAddress2" placeholder="Country"> </div>
+										<div class="form-row">
+											<div class="form-group col-md-6">
+												<label for="inputPhone">Phone</label>
+												<input v-model="phone" type="text" class="form-control" id="inputPhone" placeholder="Phone"> </div>
+										</div>
+										<p v-if="errors" id="errors">{{errors}}</p>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<button @click="checkRegisrt" type="button" class="btn btn-primary" data-dismiss="modal">To register</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- Поиск -->
+		<div id="search">
+			<div class="allProductsTwo" v-if="filteredItems.length">
+				<div class="oneProduct" v-for="item in filteredItems">
+					<div id="buy">
+						<button @click="buyClick(item)"> <img src="images/addToCart.png" alt=""> Add to Cart </button>
+					</div> <img class="pictureProduct" :src="item.cover" alt="">
+					<div class="nameProduct"> {{ item.name }} </div>
+					<div class="priceProduct"> {{ item.currency }}{{ item.price }} </div>
+				</div>
+			</div>
+			<div v-if="!filteredItems.length" class="empty">Ничего не найдено</div>
+		</div>
+    <nav class="topNav">
+        <a href="index.html">Home</a>
+        <a href="allproducts.html">Man</a>
+        <a href="#">Women</a>
+        <a href="allproducts.html">Kids</a>
+        <a href="allproducts.html">Accoseriese</a>
+        <a href="allproducts.html">Featured</a>
+        <a href="allproducts.html">Hot Deals </a>
+    </nav>
+	<div id="bodySite">
+			<!-- Титульная страница сайта -->
+    <div class="modelWrap">
+        <div class="modelSlider">
+            <img src="images/slider1.jpg" alt="">
+            <div class="modelSliderLeftArrow">
+                <i class="fas fa-angle-left"></i>
+            </div>
+            <div class="modelSliderRightArrow">
+                <i class="fas fa-angle-right"></i>
+            </div>
+        </div>
+        <div class="modelDataWrap">
+            <div class="modelData">
+                <div class="modelHeader">Women collection</div>
+                <div class="modelProductHeader">
+                    Moschino Cheap And Chic
+                </div>
+                <div class="modelProductDesc">
+                    Compellingly actualize fully researched processes before proactive outsourcing. Progressively syndicate
+                    collaborative architectures before cutting-edge services. Completely visualize parallel core competencies
+                    rather than exceptional portals.
+                </div>
+                <div class="modelProductDetails">
+                    <div>
+                        <span class="modelProductParam">Material:</span>
+                        <span class="modelProductValue">Cotton</span>
+                    </div>
+                    <div>
+                        <span class="modelProductParam">Designer:</span>
+                        <span class="modelProductValue">Binburhan</span>
+                    </div>
+                </div>
+                <div class="modelProductPrice">
+                    $561
+                </div>
+                <form class="modelProductOrder">
+                    <div class="modelProductOrderUnit">
+                        <label for="">Choose color</label>
+                        <div class="modelProductSelectWrap">
+                            <i class="fas fa-chevron-down"></i>
+                            <div class="modelProductColorValue"></div>
+                            <select class="modelProductColor" name="" id="">
+                                <option value="">Red</option>
+                                <option value="">Green</option>
+                                <option value="">Blue</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modelProductOrderUnit">
+                        <label for="">Choose size</label>
+                        <div class="modelProductSelectWrap">
+                            <i class="fas fa-chevron-down"></i>
+                            <select name="" id="">
+                                <option value="">XXL</option>
+                                <option value="">XL</option>
+                                <option value="">L</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modelProductOrderUnit">
+                        <label for="">Quantity</label>
+                        <input type="text" value="2">
+                    </div>
+                    <button>
+                        <img src="images/cartPink.png" alt="">
+                        Add to Cart
+                    </button>
+                </form>
+            </div>
+        
+        </div>
+    </div>
+
+    <div class="container alsoLike">
+        <div class="alsoLikeHeader">
+            You may like also
+        </div>
+        <div class="featuredItems">
+            <div class="featuredItem">
+                    <div class="featuredImgWrap">
+                        <div class="featuredBuy">
+                            <button>
+                                <img src="images/addToCart.png" alt="">
+                                Add to Cart
+                            </button>
+                        </div>
+                        <img class="featuredProduct" src="images/featuredItem1.jpg" alt="">
+                    </div>
+                    <div class="featuredNameAndPrice">
+                        <div class="featuredItemName">
+                            Mango People T-shirt
+                        </div>
+                        <div class="featuredItemPrice">$52.00</div>
+                    </div>
+            </div>
+            <div class="featuredItem">
+                <div class="featuredImgWrap">
+                    <div class="featuredBuy">
+                        <button>
+                            <img src="images/addToCart.png" alt="">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <img class="featuredProduct" src="images/featuredItem2.jpg" alt="">
+                </div>
+                <div class="featuredNameAndPrice">
+                    <div class="featuredItemName">
+                        Mango People T-shirt
+                    </div>
+                    <div class="featuredItemPrice">$52.00</div>
+                </div>
+            </div>
+            <div class="featuredItem">
+                <div class="featuredImgWrap">
+                    <div class="featuredBuy">
+                        <button>
+                            <img src="images/addToCart.png" alt="">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <img class="featuredProduct" src="images/featuredItem3.jpg" alt="">
+                </div>
+                <div class="featuredNameAndPrice">
+                    <div class="featuredItemName">
+                        Mango People T-shirt
+                    </div>
+                    <div class="featuredItemPrice">$52.00</div>
+                </div>
+            </div>
+            <div class="featuredItem">
+                <div class="featuredImgWrap">
+                    <div class="featuredBuy">
+                        <button>
+                            <img src="images/addToCart.png" alt="">
+                            Add to Cart
+                        </button>
+                    </div>
+                    <img class="featuredProduct" src="images/featuredItem4.jpg" alt="">
+                </div>
+                <div class="featuredNameAndPrice">
+                    <div class="featuredItemName">
+                        Mango People T-shirt
+                    </div>
+                    <div class="featuredItemPrice">$52.00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+    <!-- Корзина сайта -->
+		<div id="basket">
+			<div class="container shoppingCart">
+				<div class="shoppingGridRow shoppingGridRowHead">
+					<div>Product details</div>
+					<div class="productPrice">Unite price</div>
+					<div class="productQty">Quantity</div>
+					<div class="productShipping">Shipping</div>
+					<div class="productSubtotal">Subtotal</div>
+					<div class="productAction">Action</div>
+				</div>
+				<product-cart-component @ondelete="handleDeleteClick" :basket_bought="basketBought"></product-cart-component>
+			</div>
+			<div class="container shoppingBtnsWrap">
+				<button>Clear shopping cart</button>
+				<a href="">
+					<button>Continue shopping</button>
+				</a>
+			</div>
+			<div class="container checkOutWrap">
+				<section class="shippingAddressWrap">
+					<form>
+						<h2>Shipping adress</h2>
+						<select required>
+							<option>Bangladesh</option>
+							<option>Russia</option>
+							<option>Australia</option>
+						</select>
+						<input required type="text" placeholder="State">
+						<input required type="number" placeholder="Postcode / Zip">
+						<button>Get a quote</button>
+					</form>
+				</section>
+				<section class="couponDiscountWrap">
+					<h2>Coupon discount</h2>
+					<form>
+						<label for="state">Enter your coupon code if you have one</label>
+						<input id="state" type="text" placeholder="State">
+						<button>Apply coupon</button>
+					</form>
+				</section>
+				<div class="grandTotalWrap">
+					<div class="infoPrice">
+						<div id="basketEmpty" v-bind:style="{ display: displayTwo }">Cart empty</div>
+						<div class="grandTotalSub" :total="total" v-bind:style="{ display: display }"> <span>Sub total</span> <span> {{ total }}</span> </div>
+						<div class="grandTotalGrand" :total="total" v-bind:style="{ display: display }"> <span>Grand total</span> <span> {{ total }}</span> </div>
+					</div>
+					<button>Proceed to checkout</button>
+				</div>
+			</div>
+		</div>
+<!-- Комментарии и подписка -->
+		<div class="subscribeWrap">
+			<div class="container subscribe">
+				<div class="reviews">
+					<div class="reviewUnit">
+						<div class="reviewUnitRight" v-for="item in commentsList" >
+						<div class="reviewUnitLeft">
+						<div><img src="images/reviewPerson.png" alt=""></div>
+						<div><blockquote> “ {{ item.message }} ” </blockquote></div>
+						</div>
+						<div class="infPost">
+							<div class="reviewName"> {{ item.name }} </div>
+							<div class="reviewFrom"> {{ item.email }} </div>
+							<div class="reviewFrom"> {{ item.date }} </div>
+						</div>
+							</div>
+							<!-- Добавить комментарий -->
+							<button type="button" class="btn btn-primaryThree" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add a comment</button>
+							<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  								<div class="modal-dialog" role="document">
+    								<div class="modal-content">
+      									<div class="modal-header">
+        									<h5 class="modal-title" id="exampleModalLabel">New comment</h5>
+        									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          										<span aria-hidden="true">&times;</span>
+        									</button>
+      									</div>
+      									<div class="modal-body">
+        									<form class="data-1" @submit="send_comment">
+          										<div class="form-group">
+            										<label for="recipient-name" class="col-form-label">Your name:</label>
+            										<input v-model="nameComment" type="text" class="form-control" id="recipient-name">
+          										</div>
+          										<div class="form-group">
+            										<label for="recipient-email" class="col-form-label">Your email:</label>
+            										<input v-model="emailComment" type="text" class="form-control" id="recipient-email">
+          										</div>
+          										<div class="form-group">
+            									<label for="message-text" class="col-form-label">Your comment:</label>
+            									<textarea v-model="messageComment" class="form-control" id="message-text"></textarea>
+          										</div>
+        									</form>
+      									</div>
+      									<div class="modal-footer">
+        									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        									<button @click="send_comment" type="button" class="btn btn-primary" data-dismiss="modal">Send comment</button>
+      									</div>
+    								</div>
+  								</div>
+							</div>
+						
+					</div>
+				</div>
+				<!-- Подписка -->
+				<div class="subscribeDivider"></div>
+				<div class="subscribeRight">
+					<div class="subscribeRightHead"> Subscribe </div>
+					<div class="subscribeRightText"> FOR OUR NEWLETTER AND PROMOTION </div>
+					<form class="subscribeForm" action="">
+						<input placeholder="Enter Your Email" type="text">
+						<button class="subscribeLink"><a href="checkout.html">Subscribe</a></button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- футер -->
+    <footer class="container">
+        <div class="footerBrand">
+            <div class="logo">
+                BRAN<span>D</span>
+            </div>
+            <div class="footerBrandText1">
+                Objectively transition extensive data rather than cross functional solutions. Monotonectally syndicate
+                multidisciplinary materials before go forward benefits. Intrinsicly syndicate an expanded array of
+                processes and cross-unit partnerships.
+            </div>
+            <div class="footerBrandText2">
+                Efficiently plagiarize 24/365 action items and focused infomediaries.
+                Distinctively seize superior initiatives for wireless technologies. Dynamically optimize.
+            </div>
+        </div>
+        <section class="footerColumn">
+            <h2>COMPANY</h2>
+            <nav>
+                <a href="">Home</a>
+                <a href="">Shop</a>
+                <a href="">About</a>
+                <a href="">How It Works</a>
+                <a href="">Contact</a>
+            </nav>
+        </section>
+        <section class="footerColumn">
+            <h2>INFORMATION</h2>
+            <nav>
+                <a href="">Tearms & Condition</a>
+                <a href="">Privacy Policy</a>
+                <a href="">How to Buy</a>
+                <a href="">How to Sell</a>
+                <a href="">Promotion</a>
+            </nav>
+        </section>
+        <section class="footerColumn">
+            <h2>SHOP CATEGORY</h2>
+            <nav>
+                <a href="">Men</a>
+                <a href="">Women</a>
+                <a href="">Child</a>
+                <a href="">Apparel</a>
+                <a href="">Browse All</a>
+            </nav>
+        </section>
+    </footer>
+    <div class="copyrights">
+        <div class="container copyrightsWrap">
+            <div class="copyrightsLeft">
+                &copy; 2017 Brand All Rights Reserved.
+            </div>
+            <div class="copyrightsRight">
+                <a href=""><i class="fab fa-facebook-f"></i></a>
+                <a href=""><i class="fab fa-twitter"></i></a>
+                <a href=""><i class="fab fa-linkedin-in"></i></a>
+                <a href=""><i class="fab fa-pinterest-p"></i></a>
+                <a href=""><i class="fab fa-google-plus-g"></i></a>
+            </div>
+        </div>
+    </div>
+ </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+	<script src="styles/text.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
