@@ -1,0 +1,58 @@
+[
+    {
+      "id": 1,
+      "name": "White T-shirt",
+      "currency": "$",
+      "price": 22,
+      "cover": "../images/featuredItem1.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Red blouse",
+      "currency": "$",
+      "price": 23,
+      "cover": "../images/featuredItem2.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Blue jacket",
+      "currency": "$",
+      "price": 52,
+      "cover": "../images/featuredItem3.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Colored dress",
+      "currency": "$",
+      "price": 42,
+      "cover": "../images/featuredItem4.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Striped Dress",
+      "currency": "$",
+      "price": 33,
+      "cover": "../images/featuredItem5.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Blue Jacket",
+      "currency": "$",
+      "price": 45,
+      "cover": "../images/featuredItem6.jpg"
+    },
+    {
+      "id": 7,
+      "name": "Shorts",
+      "currency": "$",
+      "price": 15,
+      "cover": "../images/featuredItem7.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Blue Sweater",
+      "currency": "$",
+      "price": 37,
+      "cover": "../images/featuredItem8.jpg"
+    }
+  ]
